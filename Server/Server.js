@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const amountCalroutes = require("./Routes/AmountRoutes");
 const connectDB = require("./Configs/dbconnection");
+const PORT = process.env.PORT || 3000;
 app.use(
   cors({
     origin: ["http://localhost:5173"],
@@ -20,7 +21,7 @@ connectDB();
 
 app.use("/api/amount", amountCalroutes);
 
-app.listen("3000", (err) => {
+app.listen(PORT, (err) => {
   if (err) {
     console.log("Error booting the server");
   }
