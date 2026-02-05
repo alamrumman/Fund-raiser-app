@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const amountCalroutes = require("./Routes/AmountRoutes");
+const connectDB = require("./Configs/dbconnection");
 app.use(
   cors({
     origin: ["http://localhost:5173"],
@@ -13,6 +15,9 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
+
+connectDB();
+
 app.use("/api/amount", amountCalroutes);
 
 app.listen("3000", (err) => {
