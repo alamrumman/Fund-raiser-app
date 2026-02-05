@@ -14,7 +14,9 @@ function Navbar() {
           </div>
         </div>
 
-        <div> menu</div>
+        <div>
+          <img src="images\hamburger-menu-svgrepo-com.svg" alt="" className="w-17"/>
+        </div>
       </div>
     </div>
   );

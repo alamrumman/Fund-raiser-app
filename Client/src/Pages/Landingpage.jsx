@@ -33,7 +33,7 @@ function Landingpage() {
 
     try {
       const res = await fetch(
-        "http://localhost:3000/api/amount/recalculate-amount",
+        "https://fund-raiser-app.onrender.com/api/amount/recalculate-amount",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -56,7 +56,7 @@ function Landingpage() {
     <div style={{ background: COLORS.bg }} className="w-full h-screen">
       <Navbar />
       <div className=" mt-16 flex justify-center ">
-        <div className="   px-5 py-3 font-semibold bg-[#fff7e9] rounded-md">
+        <div className="   px-5 py-3 font-bold bg-[#fff7e9] rounded-md">
           Our Impact
         </div>
       </div>
@@ -65,6 +65,31 @@ function Landingpage() {
       </div>
       <div className="flex justify-center text-2xl font-bold px-10 sm:text-3xl ">
         A Diffrence
+      </div>
+      <div className=" h-35 rounded-2xl shadow-xl mt-5 m-3 bg-amber-50 p-1">
+        <div className="flex justify-center">
+          <label className="font-semibold text-lg p-2" htmlFor="">
+            Total Funds Raised
+          </label>
+        </div>
+        <div className="w-full h-11  flex items-center justify-center text-2xl font-extrabold underline mb-1 ">
+          {" "}
+          ₹0.00/-
+        </div>
+        <div className="flex justify-center">
+          powered by
+          <img
+            src="\images\upi.svg"
+            alt=""
+            className="h-7 w-10 bg-white ml-1 mr-1"
+          />{" "}
+          &
+          <img
+            src="\images\zaakpay+logo.png"
+            alt=""
+            className="h-6 w-22 bg-white ml-2"
+          />
+        </div>
       </div>
       <div
         className="mt-5 rounded-4xl m-1 h-full justify-center"
