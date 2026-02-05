@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-mongoose.connect()
 const transactionSchema = new mongoose.Schema(
   {
     name: {
