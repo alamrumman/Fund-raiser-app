@@ -1,10 +1,10 @@
-// amount we will be reverified here and then the transaction api will be hit
 const transaction = require("../Models/Transaction");
+const generateChecksum = require("../utils/generateChecksum");
+const isLive = process.env.ZAAKPAY_MODE === "LIVE";
 const amountRecalculate = async (req, res) => {
   try {
-    // destructuring the data received from the frontend
+    const { name, year, isSW, email } = req.body;
 
-    const { name, year, isSW } = req.body;
     const mappingYeartoAmount = {
       first: 200,
       second: 250,
@@ -15,14 +15,13 @@ const amountRecalculate = async (req, res) => {
     const gender = isSW ? "SW" : "SD";
 
     if (!finalAmount) {
+      console.warn("⚠️ Invalid year received:", year);
       return res.status(400).json({ message: "Wrong year selected" });
     }
-    // we will now create order using this finalised amount
-    //every order must have unique order for which we will use date and time and store it in the database before sending it.
 
     const orderId = `ORD_${Date.now()}`;
-    //now we will store this transaction before hitting the gateway
-    await transaction.create({
+
+    const savedTx = await transaction.create({
       name,
       year,
       amount: finalAmount,
@@ -30,12 +29,40 @@ const amountRecalculate = async (req, res) => {
       status: "PENDING",
       gender,
     });
-    return res.status(200).json({ message: "all well" });
-    //now lets hit the API
-  } catch (error) {
-    console.log(error);
 
-    return res.status(500).json({ message: "Internal server Error" });
+    const payload = {
+      merchantIdentifier: process.env.ZAAKPAY_MERCHANT_ID,
+      orderId,
+      amount: finalAmount * 100,
+      currency: "INR",
+      buyerEmail: email,
+    };
+
+    if (!process.env.ZAAKPAY_MERCHANT_ID || !process.env.ZAAKPAY_SECRET) {
+      console.error("❌ Zaakpay ENV variables missing");
+      throw new Error("Zaakpay configuration missing");
+    }
+
+    const checksum = generateChecksum(payload, process.env.ZAAKPAY_SECRET);
+
+    return res.status(200).json({
+      success: true,
+      orderId,
+      amount: finalAmount,
+      currency: "INR",
+      merchantIdentifier: process.env.ZAAKPAY_MERCHANT_ID,
+      buyerEmail: email,
+      checksum,
+      mode: isLive ? "LIVE" : "TEST",
+    });
+  } catch (error) {
+    console.error("🔥 Error in amountRecalculate:", error.message);
+    console.error(error.stack);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
 };
 
