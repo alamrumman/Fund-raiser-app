@@ -23,14 +23,42 @@ function Landingpage() {
   const [isSW, setIsSW] = useState(false);
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const amount = yearAmountMap[year];
+
+  const redirectToZaakpay = (paymentData) => {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://api.zaakpay.com/api/paymentTransact/V8";
+
+    const fields = {
+      merchantIdentifier: paymentData.merchantIdentifier,
+      orderId: paymentData.orderId,
+      amount: paymentData.amount,
+      currency: paymentData.currency,
+      buyerEmail: paymentData.buyerEmail,
+      checksum: paymentData.checksum,
+    };
+
+    Object.entries(fields).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+  };
 
   // from the frontend we will be passing username and year only , amount is just a UI view. The amount will be
   // recalculated at the backend hence making the system secure. As blindly sending from the frontend can cause
   // serious issues like user acessing the dev tools and manipulating amounts and causing issues.
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const res = await fetch(
         "https://fund-raiser-app.onrender.com/api/amount/recalculate-amount",
@@ -41,11 +69,18 @@ function Landingpage() {
             name,
             year,
             isSW,
+            email,
           }),
         },
       );
 
       const data = await res.json();
+
+      if (res.ok && data.success) {
+        redirectToZaakpay(data);
+      } else {
+        alert(data.message || "Unable to initiate payment");
+      }
       console.log("Response:", data);
     } catch (err) {
       console.error("Payment error:", err);
@@ -128,6 +163,18 @@ function Landingpage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            <label className="flex ml-2 mt-5">Enter email</label>
+
+            <input
+              type="email"
+              placeholder="example@gmail.com"
+              className="border border-black rounded-2xl p-2 w-full bg-gray-100"
+              pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+              title="Only Gmail addresses are allowed (example@gmail.com)"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <div className="mt-5 flex gap-3">
               <label className="flex" htmlFor="">
                 Select Year
@@ -149,11 +196,38 @@ function Landingpage() {
             <div className=" w-full flex justify-center items-center mt-5 rounded bg-amber-300 h-10">
               Amount: ₹{amount}/-
             </div>
-            <button className="w-full mt-5 p-3 bg-green-500 rounded-3xl text-white font-bold">
-              Contribute now !
+            <button
+              disabled={loading}
+              className={`w-full mt-5 p-3 rounded-3xl text-white font-bold
+  ${loading ? "bg-gray-400" : "bg-green-500"}`}
+            >
+              {loading ? "Redirecting..." : "Contribute now !"}
             </button>
           </div>
         </form>
+        <div className="w-full overflow-hidden bg-yellow-100 border-y border-yellow-400">
+          <div className="flex w-max animate-[ticker_30s_linear_infinite]">
+            <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
+              ⚠️ Payments will fail as merchant onboarding is not complete. Live
+              payments will be enabled after approval.
+            </span>
+            <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
+              ⚠️ Payments will fail as merchant onboarding is not complete. Live
+              payments will be enabled after approval.
+            </span>
+            <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
+              ⚠️ Payments will fail as merchant onboarding is not complete. Live
+              payments will be enabled after approval.
+            </span>
+          </div>
+
+          <style>{`
+    @keyframes ticker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+  `}</style>
+        </div>
       </div>
     </div>
   );

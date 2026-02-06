@@ -7,7 +7,7 @@ const connectDB = require("./Configs/dbconnection");
 const PORT = process.env.PORT || 3000;
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://fund-raiser-app-1.onrender.com"],
     credentials: true,
   }),
 );
@@ -25,5 +25,5 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log("Error booting the server");
   }
-  console.log("Server listening at port 3000");
+  console.log(`Server listening at ${PORT}`);
 });
