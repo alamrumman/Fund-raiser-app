@@ -23,6 +23,15 @@ connectDB();
 
 app.use("/api/amount", amountCalroutes);
 app.use("/api/hooks", hookroutes);
+const path = require("path");
+
+// Serve frontend build
+app.use(express.static(path.join(__dirname, "dist"))); // or build
+
+// SPA fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 app.get("/api/payment-status", async (req, res) => {
   const tx = await transaction.findOne({ orderId: req.query.orderId });
