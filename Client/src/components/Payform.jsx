@@ -12,7 +12,7 @@ function Payform({ popup, setPopup }) {
   const [isSW, setIsSW] = useState(false);
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
   const amount = yearAmountMap[year];
@@ -48,39 +48,31 @@ function Payform({ popup, setPopup }) {
     setLoading(true);
 
     try {
-      //redirecting for now
-
-      window.location.href = "https://api.zaakpay.com/api/paymentTransact/V8";
-
-      // const res = await fetch(
-      //   "https://fund-raiser-app.onrender.com/api/amount/recalculate-amount",
-      //   {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({
-      //       name,
-      //       year,
-      //       isSW,
-      //       email,
-      //     }),
-      //   },
-      // );
+      const res = await fetch(
+        "https://fund-raiser-app.onrender.com/api/amount/recalculate-amount",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            year,
+            isSW,
+            phone,
+          }),
+        },
+      );
 
       // from the frontend we will be passing username and year only , amount is just a UI view. The amount will be
       // recalculated at the backend hence making the system secure. As blindly sending from the frontend can cause
       // serious issues like user acessing the dev tools and manipulating amounts and causing issues.
 
-      // const data = await res.json();
-      // console.log("res.ok:", res.ok);
-      // console.log("status:", res.status);
-      // console.log("data:", data);
-
-      // if (res.ok && data.success) {
-      //   redirectToZaakpay(data);
-      // } else {
-      //   alert(data.message || "Unable to initiate payment");
-      // }
-      // console.log("Response:", data);
+      const data = await res.json();
+      setLoading(false);
+      if (res.ok && data.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        alert(data.message || "Unable to initiate payment");
+      }
     } catch (err) {
       console.error("Payment error:", err);
     }
@@ -134,17 +126,15 @@ function Payform({ popup, setPopup }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <label className="flex ml-2 mt-5">Enter email</label>
+          <label className="flex ml-2 mt-5">Enter Phone number</label>
 
           <input
-            type="email"
-            placeholder="example@gmail.com"
+            type="Number"
             className="border border-black rounded-2xl p-2 w-full bg-gray-100"
-            pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
-            title="Only Gmail addresses are allowed (example@gmail.com)"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="98765432112"
           />
           <div className="mt-5 gap-3">
             <label className="flex ml-2">Select Year</label>
