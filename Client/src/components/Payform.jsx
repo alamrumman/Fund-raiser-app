@@ -149,7 +149,7 @@ function Payform({ popup, setPopup }) {
           <div className="mt-5 gap-3">
             <label className="flex ml-2">Select Year</label>
 
-            <div className="flex justify-between h-17 py-1 gap-0">
+            <div className="flex justify-between h-17 gap-0">
               {/* 3rd year */}
               <button
                 type="button"
