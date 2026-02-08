@@ -10,12 +10,17 @@ function Navbar() {
             className="w-12 h-12 rounded-4xl"
             alt=" Logo"
           />
-          <div className="text-lg font-semibold flex items-center">FUND RAISER
+          <div className="text-lg font-semibold flex items-center">
+            FUND RAISER
           </div>
         </div>
 
         <div>
-          <img src="images\hamburger-menu-svgrepo-com.svg" alt="" className="w-17"/>
+          <img
+            src="images\hamburger-menu-svgrepo-com.svg"
+            alt=""
+            className="w-17"
+          />
         </div>
       </div>
     </div>

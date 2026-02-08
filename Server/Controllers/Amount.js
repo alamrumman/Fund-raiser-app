@@ -1,4 +1,4 @@
-const transaction = require("../Models/Transaction");
+const Transaction = require("../Models/Transaction");
 const axios = require("axios");
 
 const amountRecalculate = async (req, res) => {
@@ -8,17 +8,18 @@ const amountRecalculate = async (req, res) => {
     const mappingYeartoAmount = {
       first: 200,
       second: 250,
-      third: 10, // use 10 for live testing
+      third: 300,
     };
 
     const amount = mappingYeartoAmount[year];
     if (!amount) {
       return res.status(400).json({ message: "Wrong year selected" });
     }
-
+    console.log("Model name:", Transaction.modelName);
+    console.log("Collection:", Transaction.collection.name);
     const orderId = `ORD_${Date.now()}`;
 
-    const dbhit = await transaction.create({
+    const dbhit = await Transaction.create({
       name,
       year,
       amount,
@@ -26,13 +27,13 @@ const amountRecalculate = async (req, res) => {
       status: "PENDING",
       gender: isSW ? "SW" : "SD",
     });
-    
+
     const payload = new URLSearchParams({
       customer_mobile: phone || "9999999999",
       user_token: process.env.IMB_USER_TOKEN,
       amount: amount.toString(),
       order_id: orderId,
-      redirect_url: `https://fund-raiser-app.onrender.com/payment-processing?order_id=${orderId}`,
+      redirect_url: `https://fund-raiser-app-1.onrender.com/payment-processing?order_id=${orderId}`,
       remark1: year,
     });
 

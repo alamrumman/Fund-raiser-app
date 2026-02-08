@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { COLORS } from "../constants/colors";
+import Spinner from "./Spinner";
 const yearAmountMap = {
   first: 200,
   second: 250,
@@ -15,6 +17,8 @@ function Payform({ popup, setPopup }) {
   const [phone, setPhone] = useState("");
   const [firstCall, setFirstCall] = useState(false);
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const amount = yearAmountMap[year];
 
@@ -42,7 +46,12 @@ function Payform({ popup, setPopup }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
     setLoading(true);
+    setShowSpinner(true);
 
     try {
       const res = await fetch(
@@ -59,28 +68,36 @@ function Payform({ popup, setPopup }) {
         },
       );
 
-      // from the frontend we will be passing username and year only , amount is just a UI view. The amount will be
-      // recalculated at the backend hence making the system secure. As blindly sending from the frontend can cause
-      // serious issues like user acessing the dev tools and manipulating amounts and causing issues.
-
       const data = await res.json();
-      setLoading(false);
+
       if (res.ok && data.payment_url) {
-        window.location.href = data.payment_url;
-      } else {
-        alert(data.message || "Unable to initiate payment");
+        // small delay so spinner is visible (UX polish)
+        setTimeout(() => {
+          window.location.href = data.payment_url;
+        }, 800);
+        return;
       }
+
+      // failure path
+      submittingRef.current = false;
+      setLoading(false);
+      setShowSpinner(false);
+      alert(data.message || "Unable to initiate payment");
     } catch (err) {
+      submittingRef.current = false;
+      setLoading(false);
+      setShowSpinner(false);
       console.error("Payment error:", err);
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
       className="fixed inset-0 backdrop-blur-sm bg-opacity-30 z-50 "
     >
       <div
-        className=" rounded-xl m-3 mt-25 h-130 justify-center "
+        className=" rounded-xl m-3 mt-25 h-140 justify-center "
         style={{ background: COLORS.white }}
       >
         <div className="py-5 px-2 font-semibold text-lg flex justify-between">
@@ -189,17 +206,17 @@ function Payform({ popup, setPopup }) {
           <div className=" w-full flex justify-center items-center mt-5 rounded bg-amber-300 h-10">
             Amount: ₹{amount}/-
           </div>
-          <button
-            disabled={loading || !firstCall}
-            className={`w-full mt-5 p-3 rounded-3xl text-white font-bold
-  ${loading || !firstCall ? "bg-gray-400" : "bg-green-500"}`}
-          >
-            {loading
-              ? "Redirecting..."
-              : !firstCall
-                ? "Loading Server..."
-                : "Contribute now!"}
-          </button>
+          {showSpinner ? (
+            <Spinner />
+          ) : (
+            <button
+              disabled={!firstCall}
+              className={`w-full mt-5 p-3 rounded-3xl text-white font-bold
+    ${!firstCall ? "bg-gray-400" : "bg-green-500"}`}
+            >
+              {!firstCall ? "Loading Server..." : "Contribute now!"}
+            </button>
+          )}
         </div>
         <div className="w-full overflow-hidden bg-yellow-100 border-y border-yellow-400">
           <div className="flex w-max animate-[ticker_20s_linear_infinite]">

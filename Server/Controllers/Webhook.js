@@ -1,4 +1,5 @@
 const Transaction = require("../Models/Transaction");
+const FundStats = require("../Models/FundStats");
 
 const imbWebhook = async (req, res) => {
   try {
@@ -10,21 +11,41 @@ const imbWebhook = async (req, res) => {
       return res.sendStatus(400);
     }
 
+    // 1️⃣ Find transaction
+    const tx = await Transaction.findOne({ orderId: order_id });
+
+    // IMB retries webhooks → always return 200
+    if (!tx) {
+      return res.sendStatus(200);
+    }
+
+    // 2️⃣ Already processed → do nothing (VERY IMPORTANT)
+    if (tx.status === "SUCCESS") {
+      return res.sendStatus(200);
+    }
+
+    // 3️⃣ Success case
     if (status === "SUCCESS" && result?.txnStatus === "COMPLETED") {
-      await Transaction.findOneAndUpdate(
-        { orderId: order_id },
+      // Update transaction
+      tx.status = "SUCCESS";
+      tx.utr = result.utr;
+      tx.gatewayTxnId = result.tr;
+      await tx.save();
+
+      // Increment global stats ONCE
+      await FundStats.updateOne(
+        { _id: "GLOBAL_STATS" },
         {
-          status: "SUCCESS",
-          utr: result.utr,
-          gatewayTxnId: result.tr,
-        }
+          $inc: {
+            totalAmount: tx.amount,
+            totalTransactions: 1,
+          },
+        },
       );
-      
     } else {
-      await Transaction.findOneAndUpdate(
-        { orderId: order_id },
-        { status: "FAILED" },
-      );
+      // 4️⃣ Failed case
+      tx.status = "FAILED";
+      await tx.save();
     }
 
     // IMB expects 200 OK
