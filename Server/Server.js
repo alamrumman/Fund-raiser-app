@@ -1,12 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
+const FundStats = require("./Models/FundStats");
 const amountCalroutes = require("./Routes/AmountRoutes");
 const hookroutes = require("./Routes/HookRoutes");
 const connectDB = require("./Configs/dbconnection");
 const transaction = require("./Models/Transaction");
-
+const TransactionRoutes = require("./Routes/TransactionRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -30,9 +30,10 @@ connectDB();
 /* ---------------- API ROUTES ---------------- */
 app.use("/api/amount", amountCalroutes);
 app.use("/api/hooks", hookroutes);
+app.use("/api/total", TransactionRoutes);
 
 /* Payment status API (used by redirect page) */
-app.get("/api/payment-status", async (req, res) => {
+app.get("/api/payment-status/orderID", async (req, res) => {
   try {
     const { orderId } = req.query;
     if (!orderId) {
@@ -48,6 +49,19 @@ app.get("/api/payment-status", async (req, res) => {
   } catch (err) {
     console.error("Payment status error:", err);
     return res.status(500).json({ status: "ERROR" });
+  }
+});
+// GET total funds
+app.get("/api/fund-stats", async (req, res) => {
+  try {
+    const stats = await FundStats.findById("GLOBAL_STATS").lean();
+
+    res.json({
+      totalAmount: stats?.totalAmount || 0,
+      totalTransactions: stats?.totalTransactions || 0,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Unable to fetch stats" });
   }
 });
 

@@ -4,6 +4,25 @@ import Payform from "../components/Payform";
 import { COLORS } from "../constants/colors";
 function Landingpage() {
   const [popup, setPopup] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchFundStats = async () => {
+      try {
+        const res = await fetch(
+          "https://fund-raiser-app.onrender.com/api/fund-stats",
+        );
+        const data = await res.json();
+        setTotalAmount(data.totalAmount);
+      } catch (err) {
+        console.error("Failed to fetch fund stats", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFundStats();
+  }, []);
 
   return (
     <div
@@ -30,20 +49,20 @@ function Landingpage() {
         </div>
         <div className="w-full h-11  flex items-center justify-center text-2xl font-extrabold underline mb-1 ">
           {" "}
-          ₹0.00/-
+          {loading ? "—" : `₹${totalAmount}`}
         </div>
         <div className="flex justify-center">
           powered by
           <img
             src="\images\upi.svg"
             alt=""
-            className="h-7 w-10 bg-white ml-1 mr-1"
+            className="h-7 w-12 bg-white ml-1 mr-1"
           />{" "}
           &
           <img
-            src="\images\zaakpay+logo.png"
+            src="\images\logo-dark.png"
             alt=""
-            className="h-6 w-22 bg-white ml-2"
+            className="h-6 w-33 bg-white ml-2"
           />
         </div>
       </div>
