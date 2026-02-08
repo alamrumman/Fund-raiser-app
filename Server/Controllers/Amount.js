@@ -18,7 +18,7 @@ const amountRecalculate = async (req, res) => {
 
     const orderId = `ORD_${Date.now()}`;
 
-    await transaction.create({
+    const dbhit = await transaction.create({
       name,
       year,
       amount,
@@ -26,7 +26,7 @@ const amountRecalculate = async (req, res) => {
       status: "PENDING",
       gender: isSW ? "SW" : "SD",
     });
-
+    
     const payload = new URLSearchParams({
       customer_mobile: phone || "9999999999",
       user_token: process.env.IMB_USER_TOKEN,
