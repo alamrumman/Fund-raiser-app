@@ -13,9 +13,32 @@ function Payform({ popup, setPopup }) {
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
   const [phone, setPhone] = useState("");
+  const [firstCall, setFirstCall] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const amount = yearAmountMap[year];
+
+  useEffect(() => {
+    const backEndhit = async () => {
+      try {
+        const res = await fetch(
+          "https://fund-raiser-app.onrender.com/api/amount/checkBackend",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+
+        const data = await res.json();
+        console.log(data);
+        setFirstCall(true);
+      } catch (err) {
+        console.error("Backend wake-up failed", err);
+      }
+    };
+
+    backEndhit();
+  }, []);
 
   const redirectToZaakpay = (paymentData) => {
     const form = document.createElement("form");
@@ -193,26 +216,29 @@ function Payform({ popup, setPopup }) {
             Amount: ₹{amount}/-
           </div>
           <button
-            disabled={loading}
+            disabled={loading || !firstCall}
             className={`w-full mt-5 p-3 rounded-3xl text-white font-bold
-  ${loading ? "bg-gray-400" : "bg-green-500"}`}
+  ${loading || !firstCall ? "bg-gray-400" : "bg-green-500"}`}
           >
-            {loading ? "Redirecting..." : "Contribute now !"}
+            {loading
+              ? "Redirecting..."
+              : !firstCall
+                ? "Loading Server..."
+                : "Contribute now!"}
           </button>
         </div>
         <div className="w-full overflow-hidden bg-yellow-100 border-y border-yellow-400">
           <div className="flex w-max animate-[ticker_20s_linear_infinite]">
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
-              ⚠️ Payments will fail as merchant onboarding is not complete. Live
-              payments will be enabled after approval.
+              ✅ Wait patiently after clicking “Contribute Now” — do not
+              refresh, ✅ Check the success screen before closing the page
             </span>
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
-              ⚠️ Payments will fail as merchant onboarding is not complete. Live
-              payments will be enabled after approval.
+              ✅ Keep a screenshot or UPI reference ID until confirmation ✅
+              Allow pop-ups / redirects if prompted by your browser
             </span>
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
-              ⚠️ Payments will fail as merchant onboarding is not complete. Live
-              payments will be enabled after approval.
+              ✅ Ensure sufficient balance before proceeding
             </span>
           </div>
 
