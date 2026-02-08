@@ -17,12 +17,12 @@ function PaymentProcessing() {
 
       if (data.status === "SUCCESS") {
         clearInterval(interval);
-        navigate("/thank-you");
+        navigate(`/thank-you?order_id=${orderId}`);
       }
 
       if (data.status === "FAILED") {
         clearInterval(interval);
-        navigate(`/thank-you?order_id=${orderId}`);
+        navigate(`/payment-failed?order_id=${orderId}`);
       }
     }, 4000);
 
