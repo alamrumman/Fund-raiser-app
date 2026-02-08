@@ -40,32 +40,6 @@ function Payform({ popup, setPopup }) {
     backEndhit();
   }, []);
 
-  const redirectToZaakpay = (paymentData) => {
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://api.zaakpay.com/api/paymentTransact/V8";
-
-    const fields = {
-      merchantIdentifier: paymentData.merchantIdentifier,
-      orderId: paymentData.orderId,
-      amount: paymentData.amount,
-      currency: paymentData.currency,
-      buyerEmail: paymentData.buyerEmail,
-      checksum: paymentData.checksum,
-    };
-
-    Object.entries(fields).forEach(([key, value]) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
-    });
-
-    document.body.appendChild(form);
-    form.submit();
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

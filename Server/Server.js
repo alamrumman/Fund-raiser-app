@@ -1,20 +1,22 @@
 require("dotenv").config();
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const path = require("path");
 
 const amountCalroutes = require("./Routes/AmountRoutes");
 const hookroutes = require("./Routes/HookRoutes");
 const connectDB = require("./Configs/dbconnection");
 const transaction = require("./Models/Transaction");
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+/* ---------------- MIDDLEWARE ---------------- */
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://fund-raiser-app-1.onrender.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://fund-raiser-frontend.onrender.com", // frontend static site
+    ],
     credentials: true,
   }),
 );
@@ -22,14 +24,14 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// DB
+/* ---------------- DB ---------------- */
 connectDB();
 
-// API ROUTES — FIRST
+/* ---------------- API ROUTES ---------------- */
 app.use("/api/amount", amountCalroutes);
 app.use("/api/hooks", hookroutes);
 
-// Payment status API
+/* Payment status API (used by redirect page) */
 app.get("/api/payment-status", async (req, res) => {
   try {
     const { orderId } = req.query;
@@ -38,22 +40,23 @@ app.get("/api/payment-status", async (req, res) => {
     }
 
     const tx = await transaction.findOne({ orderId });
-    if (!tx) return res.status(404).json({ status: "NOT_FOUND" });
+    if (!tx) {
+      return res.status(404).json({ status: "NOT_FOUND" });
+    }
 
-    res.json({ status: tx.status });
+    return res.json({ status: tx.status });
   } catch (err) {
-    res.status(500).json({ status: "ERROR" });
+    console.error("Payment status error:", err);
+    return res.status(500).json({ status: "ERROR" });
   }
 });
 
-// Static frontend
-app.use(express.static(path.join(__dirname, "dist")));
-
-// SPA fallback — LAST (Node 22 safe)
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+/* ---------------- HEALTH CHECK ---------------- */
+app.get("/", (req, res) => {
+  res.send("✅ Backend API is running");
 });
 
+/* ---------------- START SERVER ---------------- */
 app.listen(PORT, () => {
-  console.log(`🚀 Server listening on port ${PORT}`);
+  console.log(`🚀 Backend running on port ${PORT}`);
 });

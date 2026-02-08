@@ -17,8 +17,9 @@ const imbWebhook = async (req, res) => {
           status: "SUCCESS",
           utr: result.utr,
           gatewayTxnId: result.tr,
-        },
+        }
       );
+      
     } else {
       await Transaction.findOneAndUpdate(
         { orderId: order_id },
