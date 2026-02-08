@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://fund-raiser-frontend.onrender.com", // frontend static site
+      "https://fund-raiser-app-1.onrender.com", // frontend static site
     ],
     credentials: true,
   }),
