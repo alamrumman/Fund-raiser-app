@@ -11,7 +11,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import PaymentFailed from "./components/PaymentFailed.jsx";
-import AdminSuccessTransactions from "./components/Sucessview.jsx";
+import AdminSuccessTransactions from "./components/SucessView.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
