@@ -11,7 +11,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import PaymentFailed from "./components/PaymentFailed.jsx";
-import AdminSuccessTransactions from "./components/SucessView.jsx";
+import AdminSuccessTransactions from "./components/AdminSuccessTransactions.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/payment-processing" element={<PaymentProcessing />} />
         <Route path="/thank-you" element={<Thanks />} />
         <Route path="/payment-failed" element={<PaymentFailed />} />
-        <Route path="/successview" element={<AdminSuccessTransactions />} />
+        <Route path="/success-view" element={<AdminSuccessTransactions />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
