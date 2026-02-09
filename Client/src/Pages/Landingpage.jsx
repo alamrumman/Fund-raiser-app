@@ -6,6 +6,8 @@ function Landingpage() {
   const [popup, setPopup] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [animatedAmount, setAnimatedAmount] = useState(0);
+
   useEffect(() => {
     const fetchFundStats = async () => {
       try {
@@ -23,6 +25,25 @@ function Landingpage() {
 
     fetchFundStats();
   }, []);
+  const formattedAmount = new Intl.NumberFormat("en-IN").format(totalAmount);
+  useEffect(() => {
+    if (totalAmount == null) return;
+
+    let startTime = performance.now();
+    const duration = 1000; // ms
+    const animate = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const value = Math.floor(progress * totalAmount);
+
+      setAnimatedAmount(value);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [totalAmount]);
 
   return (
     <div
@@ -47,9 +68,11 @@ function Landingpage() {
             Total Funds Raised
           </label>
         </div>
-        <div className="w-full h-11  flex items-center justify-center text-2xl font-extrabold underline mb-1 ">
+        <div className="w- h-11  flex items-center justify-center text-2xl font-extrabold mb-1 ">
           {" "}
-          {loading ? "—" : `₹${totalAmount}`}
+          {loading
+            ? ""
+            : `₹${new Intl.NumberFormat("en-IN").format(animatedAmount)}/-`}
         </div>
         <div className="flex justify-center">
           powered by

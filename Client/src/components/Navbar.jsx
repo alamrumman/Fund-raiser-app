@@ -1,6 +1,8 @@
 import React from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ onLogsClick }) {
+  const navigate = useNavigate();
   return (
     <div className="w-full h-15 py-2">
       <div className="flex justify-between">
@@ -15,12 +17,16 @@ function Navbar() {
           </div>
         </div>
 
-        <div>
-          <img
-            src="images\hamburger-menu-svgrepo-com.svg"
-            alt=""
-            className="w-17"
-          />
+        <div className="flex items-center">
+          <button
+            onClick={() => navigate("/success-view")}
+            className="mr-3 p-2 rounded-lg text-sm font-semibold
+                     bg-amber-100 text-amber-900
+                     hover:bg-amber-200 transition-all
+                     shadow-sm border "
+          >
+            Records
+          </button>
         </div>
       </div>
     </div>
