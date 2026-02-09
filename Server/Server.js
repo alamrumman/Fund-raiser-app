@@ -33,9 +33,9 @@ app.use("/api/hooks", hookroutes);
 app.use("/api/total", TransactionRoutes);
 
 /* Payment status API (used by redirect page) */
-app.get("/api/payment-status/orderID", async (req, res) => {
+app.get("/api/payment-status", async (req, res) => {
   try {
-    const { orderId } = req.query;
+    const orderId  = req.query.orderId;
     if (!orderId) {
       return res.status(400).json({ status: "INVALID_REQUEST" });
     }
