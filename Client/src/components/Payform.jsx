@@ -97,7 +97,7 @@ function Payform({ popup, setPopup }) {
       className="fixed inset-0 backdrop-blur-sm bg-opacity-30 z-50 "
     >
       <div
-        className=" rounded-xl m-3 mt-25 h-140 justify-center "
+        className=" rounded-xl m-3 mt-22 h-140 justify-center "
         style={{ background: COLORS.white }}
       >
         <div className="py-5 px-2 font-semibold text-lg flex justify-between">
@@ -219,24 +219,25 @@ function Payform({ popup, setPopup }) {
           )}
         </div>
         <div className="w-full overflow-hidden bg-yellow-100 border-y border-yellow-400">
-          <div className="flex w-max animate-[ticker_20s_linear_infinite]">
+          <div className="flex w-max animate-[ticker_30s_linear_infinite]">
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
-              ✅ Wait patiently after clicking “Contribute Now” — do not
-              refresh, ✅ Check the success screen before closing the page
+              ✅ Raise a ticket if you feel payment was successfull but the
+              browser did not redirect to success page, ✅ Check the success
+              screen before closing the page
             </span>
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
               ✅ Keep a screenshot or UPI reference ID until confirmation ✅
               Allow pop-ups / redirects if prompted by your browser
             </span>
             <span className="px-8 py-2 text-sm font-semibold text-yellow-900 whitespace-nowrap">
-              ✅ Ensure sufficient balance before proceeding
+              ✅ Wait for the submit button to turn green.
             </span>
           </div>
 
           <style>{`
     @keyframes ticker {
       0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(-99%); }
     }
   `}</style>
         </div>

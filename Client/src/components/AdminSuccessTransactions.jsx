@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { COLORS } from "../constants/colors";
+import Navbar from "./Navbar";
 function AdminSuccessTransactions() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,9 +31,10 @@ function AdminSuccessTransactions() {
   const years = ["third", "second", "first"];
 
   return (
-    <div className="p-4">
+    <div className=" h-screen " style={{ background: COLORS.bg }}>
+      <Navbar />
       {/* Tabs */}
-      <div className="flex gap-3 mb-4 items-center justify-center">
+      <div className="flex gap-3 mt-5 mb-4 items-center justify-center ">
         {["SD", "SW"].map((g) => (
           <button
             key={g}
@@ -56,7 +59,7 @@ function AdminSuccessTransactions() {
           return null;
 
         return (
-          <div key={year} className="mb-6">
+          <div key={year} className="mb-6 p-4">
             <h2 className="font-bold text-lg">
               {year.toUpperCase()} YEAR — ₹{section.totalAmount}
             </h2>
@@ -78,7 +81,7 @@ function AdminSuccessTransactions() {
       <div className="mt-6 flex flex-col gap-3">
         <button
           onClick={() => navigate("/")}
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
+          className="bg-green-500 hover:bg-green-600 text-white font-semibold m-4 py-2 rounded-lg transition"
         >
           Back to Home
         </button>
