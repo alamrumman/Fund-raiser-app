@@ -52,7 +52,7 @@ function Landingpage() {
     >
       <Navbar />
       <div className=" mt-16 flex justify-center ">
-        <div className="   px-5 py-3 font-bold bg-[#fff7e9] rounded-md">
+        <div className="   px-5 py-3 font-bold bg-amber-50 rounded-md">
           Our Impact
         </div>
       </div>
