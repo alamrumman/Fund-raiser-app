@@ -13,6 +13,8 @@ import "@fontsource/inter/800.css";
 import PaymentFailed from "./components/PaymentFailed.jsx";
 import AdminSuccessTransactions from "./components/AdminSuccessTransactions.jsx";
 import RaiseIssue from "./components/RaiseIssue.jsx";
+import TermsAndConditions from "./Pages/TermsAndConditions.jsx";
+import CustomerSupport from "./Pages/Customersupport.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -24,6 +26,8 @@ createRoot(document.getElementById("root")).render(
         <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/success-view" element={<AdminSuccessTransactions />} />
         <Route path="/raise-issue" element={<RaiseIssue />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/support" element={<CustomerSupport />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
