@@ -53,17 +53,17 @@ app.get("/api/payment-status", async (req, res) => {
     }
 
     // 3️⃣ Still PENDING → ask IMB
-    const payload = {
+    const payload = new URLSearchParams({
       user_token: process.env.IMB_USER_TOKEN,
       order_id: orderId,
-    };
+    });
 
     const { data: imbRes } = await axios.post(
       "https://pay.imb.org.in/api/check-order-status",
       payload,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         timeout: 15000,
       },
