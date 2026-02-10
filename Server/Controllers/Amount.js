@@ -5,6 +5,7 @@ const amountRecalculate = async (req, res) => {
   try {
     const { name, year, isSW, phone } = req.body;
 
+    // 1️⃣ Secure backend amount mapping
     const mappingYeartoAmount = {
       first: 200,
       second: 250,
@@ -13,21 +14,23 @@ const amountRecalculate = async (req, res) => {
 
     const amount = mappingYeartoAmount[year];
     if (!amount) {
-      return res.status(400).json({ message: "Wrong year selected" });
+      return res.status(400).json({ message: "Invalid year selected" });
     }
-    console.log("Model name:", Transaction.modelName);
-    console.log("Collection:", Transaction.collection.name);
+
+    // 2️⃣ Create internal order
     const orderId = `ORD_${Date.now()}`;
 
-    const dbhit = await Transaction.create({
+    await Transaction.create({
       name,
       year,
+      gender: isSW ? "SW" : "SD",
       amount,
       orderId,
       status: "PENDING",
-      gender: isSW ? "SW" : "SD",
+      source: "UNKNOWN",
     });
 
+    // 3️⃣ Call IMB Create Order API
     const payload = new URLSearchParams({
       customer_mobile: phone || "9999999999",
       user_token: process.env.IMB_USER_TOKEN,
@@ -44,21 +47,39 @@ const amountRecalculate = async (req, res) => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
+        timeout: 15000,
       },
     );
 
     if (data.status !== true) {
-      console.error("IMB ERROR:", data);
-      return res.status(400).json({ message: data.message });
+      return res.status(400).json({ message: data.message || "IMB error" });
     }
 
+    // 4️⃣ Extract IMB references (CRITICAL)
+    const imbOrderId = data.result?.orderId || null;
+    const checkLink = data.result?.check_link || null;
+    const imbTxnRef = checkLink ? checkLink.split("/").pop() : null;
+
+    // 5️⃣ Update transaction with IMB metadata
+    await Transaction.updateOne(
+      { orderId },
+      {
+        imbOrderId,
+        imbTxnRef,
+        checkLink,
+      },
+    );
+
+    // 6️⃣ Return only what frontend needs
     return res.json({
       payment_url: data.result.payment_url,
+      orderId,
     });
   } catch (error) {
-    console.error("🔥 Error in amountRecalculate:", error);
+    console.error("🔥 Create order error:", error.message);
+
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Unable to initiate payment",
     });
   }
 };
