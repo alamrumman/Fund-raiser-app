@@ -14,8 +14,7 @@ import PaymentFailed from "./components/PaymentFailed.jsx";
 import AdminSuccessTransactions from "./components/AdminSuccessTransactions.jsx";
 import RaiseIssue from "./components/RaiseIssue.jsx";
 import TermsAndConditions from "./Pages/TermsAndConditions.jsx";
-import CustomerSupport from "./Pages/Customersupport.jsx";
-
+import CustomerSupport from "./Pages/CustomerSupport.jsx"
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
