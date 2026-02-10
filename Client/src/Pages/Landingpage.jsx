@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Payform from "../components/Payform";
+import Footer from "../components/Footer";
 import { COLORS } from "../constants/colors";
 function Landingpage() {
   const [popup, setPopup] = useState(false);
@@ -110,6 +111,8 @@ function Landingpage() {
       </div>
 
       {popup && <Payform popup={popup} setPopup={setPopup} />}
+
+      <Footer/>
     </div>
   );
 }
