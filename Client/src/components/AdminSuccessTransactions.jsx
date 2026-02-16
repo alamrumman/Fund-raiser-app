@@ -31,7 +31,7 @@ function AdminSuccessTransactions() {
   const years = ["third", "second", "first"];
 
   return (
-    <div className=" h-screen " style={{ background: COLORS.bg }}>
+    <div className=" h-screen ">
       <Navbar />
       {/* Tabs */}
       <div className="flex gap-3 mt-5 mb-4 items-center justify-center ">
