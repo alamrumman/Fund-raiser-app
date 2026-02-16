@@ -8,6 +8,8 @@ const hookroutes = require("./Routes/HookRoutes");
 const connectDB = require("./Configs/dbconnection");
 const Transaction = require("./Models/Transaction");
 const TransactionRoutes = require("./Routes/TransactionRoutes");
+const sigRoutes = require("./Routes/sigroutes");
+const createticketRoutes = require("./Routes/createTicket");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -32,6 +34,8 @@ connectDB();
 app.use("/api/amount", amountCalroutes);
 app.use("/api/hooks", hookroutes);
 app.use("/api/total", TransactionRoutes);
+app.use("/api/cloudinary", sigRoutes);
+app.use("/api/ticket", createticketRoutes);
 
 /* Payment status API (used by redirect page) */
 app.get("/api/payment-status", async (req, res) => {
