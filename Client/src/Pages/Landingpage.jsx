@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Payform from "../components/Payform";
 import Footer from "../components/Footer";
+import { Badge } from "../../components/ui/badge";
 import { COLORS } from "../constants/colors";
+import Sponsorcomponent from "../components/Sponsorcomponent";
 function Landingpage() {
   const [popup, setPopup] = useState(false);
+  const [sponsor, setSponsor] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [animatedAmount, setAnimatedAmount] = useState(0);
@@ -111,8 +114,41 @@ function Landingpage() {
       </div>
 
       {popup && <Payform popup={popup} setPopup={setPopup} />}
+      <div className="flex">
+        <div className="w-48 bg-amber-50 border h-40 m-3 rounded-xl shadow-xl p-2 mt-2">
+          <div className="flex justify-center">
+            <h1 className="flex w-full items-center justify-center font-bold ">
+              Hello Sponsors!
+            </h1>
+            <img
+              src="\images\waving-hand-medium-light-skin-tone-svgrepo-com.svg"
+              alt=""
+              className="w-10"
+            />{" "}
+          </div>
+          <div className="text-xs -tracking-normal ">
+            Showcase your brand to 500+ driven youth leaders from 40+ Delhi
+            colleges.
+          </div>
+          <div className="flex justify-center p-1">
+            <button
+              className="bg-green-500 rounded p-2 mt-2  h-7 font-bold text-sm text-white flex items-center"
+              onClick={() => {
+                setSponsor(true);
+              }}
+            >
+              Become a Sponsor!
+            </button>
+          </div>
+        </div>
+        
+      </div>
 
-      <Footer/>
+      {setSponsor && (
+        <Sponsorcomponent sponsor={sponsor} setSponsor={setSponsor} />
+      )}
+
+      <Footer />
     </div>
   );
 }
