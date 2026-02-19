@@ -5,7 +5,7 @@ function Footer() {
   const navigate = useNavigate();
   return (
     <section
-      class="  sm:pt-16 lg:pt-24 mt-50"
+      class="  sm:pt-16 lg:pt-24"
       style={{ background: COLORS.bg }}
     >
       <hr class=" mx-3 border-black" />

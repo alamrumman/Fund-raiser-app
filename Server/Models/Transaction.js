@@ -11,8 +11,11 @@ const transactionSchema = new mongoose.Schema(
     year: {
       type: String,
       enum: ["first", "second", "third"],
-      required: true,
+      required: function () {
+        return this.type === "CADET";  // if cadet then year required else it is optional for sponsor
+      },
     },
+
     gender: {
       type: String,
       enum: ["SW", "SD"],
@@ -52,6 +55,12 @@ const transactionSchema = new mongoose.Schema(
     },
     utr: {
       type: String, // may arrive late or via webhook
+    },
+
+    type: {
+      type: String,
+      enum: ["CADET", "SPONSOR"],
+      required: true,
     },
 
     // 🧠 Meta / reconciliation

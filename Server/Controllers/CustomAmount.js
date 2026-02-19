@@ -1,34 +1,21 @@
-const Transaction = require("../Models/Transaction");
+// controller to handle custom payment from sponsors
 const axios = require("axios");
+const Transaction = require("../Models/Transaction");
 
-const amountRecalculate = async (req, res) => {
+const customAmount = async (req, res) => {
   try {
-    const { name, year, isSW, phone } = req.body;
-
-    // 1️⃣ Secure backend amount mapping
-    const mappingYeartoAmount = {
-      first: 200,
-      second: 250,
-      third: 300,
-    };
-
-    const amount = mappingYeartoAmount[year];
-    if (!amount) {
-      return res.status(400).json({ message: "Invalid year selected" });
-    }
+    const { name, amount, phone } = req.body;
 
     // 2️⃣ Create internal order
     const orderId = `ORD_${Date.now()}`;
 
     await Transaction.create({
       name,
-      year,
-      gender: isSW ? "SW" : "SD",
       amount,
       orderId,
       status: "PENDING",
       source: "UNKNOWN",
-      type: "CADET",
+      type: "SPONSOR",
     });
 
     // 3️⃣ Call IMB Create Order API
@@ -38,7 +25,6 @@ const amountRecalculate = async (req, res) => {
       amount: amount.toString(),
       order_id: orderId,
       redirect_url: `https://fund-raiser-app-1.onrender.com/payment-processing?order_id=${orderId}`,
-      remark1: year,
     });
 
     const { data } = await axios.post(
@@ -85,4 +71,4 @@ const amountRecalculate = async (req, res) => {
   }
 };
 
-module.exports = { amountRecalculate };
+module.exports = { customAmount };
