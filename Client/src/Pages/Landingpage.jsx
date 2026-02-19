@@ -127,8 +127,8 @@ function Landingpage() {
             />{" "}
           </div>
           <div className="text-xs -tracking-normal ">
-            Showcase your brand to 500+ driven youth leaders from 40+ Delhi
-            colleges.
+            Showcase your brand to about 4000+ driven youth leaders from 40+
+            colleges of Delhi
           </div>
           <div className="flex justify-center p-1">
             <button
@@ -141,7 +141,6 @@ function Landingpage() {
             </button>
           </div>
         </div>
-        
       </div>
 
       {setSponsor && (
