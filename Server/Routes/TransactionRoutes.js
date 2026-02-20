@@ -4,16 +4,19 @@ const Transaction = require("../Models/Transaction");
 
 router.get("/success-aggregate", async (req, res) => {
   try {
-    const data = await Transaction.aggregate([
-      // 1️⃣ Only successful transactions
-      { $match: { status: "SUCCESS" } },
-
-      // 2️⃣ Group by gender + year
+    // 🔹 1. Cadet Transactions (SD / SW)
+    const cadetData = await Transaction.aggregate([
+      {
+        $match: {
+          status: "SUCCESS",
+          type: { $ne: "SPONSOR" }, // exclude sponsors
+        },
+      },
       {
         $group: {
           _id: {
-            gender: "$gender", // SD / SW
-            year: "$year", // first / second / third
+            gender: "$gender",
+            year: "$year",
           },
           totalAmount: { $sum: "$amount" },
           transactions: {
@@ -28,19 +31,53 @@ router.get("/success-aggregate", async (req, res) => {
       },
     ]);
 
-    // 3️⃣ Shape response (simple JS, very light)
+    // 🔹 2. Sponsor Transactions
+    const sponsorData = await Transaction.aggregate([
+      {
+        $match: {
+          status: "SUCCESS",
+          type: "SPONSOR",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$amount" },
+          transactions: {
+            $push: {
+              name: "$name",
+              amount: "$amount",
+              orderId: "$orderId",
+              createdAt: "$createdAt",
+            },
+          },
+        },
+      },
+    ]);
+
+    // 🔹 3. Shape result
     const result = {
       SD: { third: {}, second: {}, first: {} },
       SW: { third: {}, second: {}, first: {} },
+      SPONSOR: {
+        totalAmount: 0,
+        transactions: [],
+      },
     };
 
-    data.forEach((item) => {
+    // Fill SD / SW
+    cadetData.forEach((item) => {
       const { gender, year } = item._id;
       result[gender][year] = {
         totalAmount: item.totalAmount,
         transactions: item.transactions,
       };
     });
+
+    // Fill Sponsor
+    if (sponsorData.length > 0) {
+      result.SPONSOR = sponsorData[0];
+    }
 
     res.json(result);
   } catch (err) {
