@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { MessageCircle, ChevronDown } from "lucide-react";
 
 const statusStyles = {
   pending: "bg-amber-100 text-amber-700",
@@ -41,10 +42,8 @@ const TicketList = () => {
       {tickets.map((ticket) => (
         <div
           key={ticket._id}
-          className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-3 flex gap-4 items-center"
-          onClick={() => {
-            setOpenId(openId === ticket._id ? null : ticket._id);
-          }}
+          className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-4 flex gap-4 items-start cursor-pointer"
+          onClick={() => setOpenId(openId === ticket._id ? null : ticket._id)}
         >
           {/* Thumbnail */}
           <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0">
@@ -52,7 +51,8 @@ const TicketList = () => {
               src={ticket.image?.url}
               alt="ticket proof"
               className="w-full h-full object-cover"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 window.open(ticket.image?.url, "_blank");
               }}
             />
@@ -82,6 +82,23 @@ const TicketList = () => {
 
             {/* UPI Ref */}
             <p className="text-xs text-gray-500">UPI Ref: {ticket.upiRef}</p>
+
+            {/* Message Toggle Row */}
+            <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center gap-2 text-gray-500 text-xs">
+                <MessageCircle size={16} />
+                <span>Message</span>
+              </div>
+
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${
+                  openId === ticket._id ? "rotate-180" : ""
+                }`}
+              />
+            </div>
+
+            {/* Expandable Message */}
             <div
               className={`transition-all duration-300 overflow-hidden ${
                 openId === ticket._id
@@ -89,10 +106,13 @@ const TicketList = () => {
                   : "max-h-0 opacity-0"
               }`}
             >
-              <p className="text-sm text-gray-600">{ticket.message}</p>
+              <div className="bg-slate-50 rounded-lg p-2 text-sm text-gray-600 border mt-2">
+                {ticket.message}
+              </div>
             </div>
+
             {/* Date */}
-            <p className="text-[11px] text-gray-400 mt-1">
+            <p className="text-[11px] text-gray-400 mt-2">
               {new Date(ticket.createdAt).toLocaleDateString()}
             </p>
           </div>
