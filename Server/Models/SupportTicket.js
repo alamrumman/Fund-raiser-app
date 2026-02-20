@@ -13,16 +13,16 @@ const supportTicketSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["pending", "verified", "rejected"],
+      enum: ["pending", "verified", "rejected", "resolved"],
       default: "pending",
     },
+    comments: {
+      type: String,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const SupportTicket = mongoose.model(
-  "SupportTicket",
-  supportTicketSchema
-);
+const SupportTicket = mongoose.model("SupportTicket", supportTicketSchema);
 
 module.exports = SupportTicket;
