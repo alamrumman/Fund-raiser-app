@@ -15,7 +15,7 @@ const createSupportTicket = async (req, res) => {
       message,
       image,
       status: "pending",
-      comments,
+      comments: "",
     });
 
     res.status(201).json(ticket);
