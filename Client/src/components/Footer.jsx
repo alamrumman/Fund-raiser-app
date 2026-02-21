@@ -4,30 +4,27 @@ import { useNavigate } from "react-router-dom";
 function Footer() {
   const navigate = useNavigate();
   return (
-    <section
-      class="  sm:pt-16 lg:pt-24"
-      style={{ background: COLORS.bg }}
-    >
-      <hr class=" mx-3 border-black" />
-      <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        <div class="grid grid-cols- md:col-span-3 lg:grid-cols-6 gap-y-10 gap-x-12">
-          <div class="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
-            <p class="text-base leading-relaxed text-gray-600 mt-7">
+    <section className="  sm:pt-16 lg:pt-24" style={{ background: COLORS.bg }}>
+      <hr className=" mx-3 border-black" />
+      <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+        <div className="grid grid-cols- md:col-span-3 lg:grid-cols-6 gap-y-10 gap-x-12">
+          <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
+            <p className="text-base leading-relaxed text-gray-600 mt-7">
               This is a non-profit crowdfunding initiative created to support
               community-driven cultural, educational, and social activities. All
               contributions are collected transparently and utilized solely for
               the intended non-profit purposes
             </p>
 
-            <ul class="flex items-center justify-between p-3 mt-5">
+            <ul className="flex items-center justify-between p-3 mt-5">
               <li>
                 <a
                   href="https://www.linkedin.com/company/national-cadet-corps-mait"
                   title=""
-                  class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
+                  className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
                 >
                   <svg
-                    class="w-7 h-7"
+                    className="w-7 h-7"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -41,10 +38,10 @@ function Footer() {
                 <a
                   href=""
                   title=""
-                  class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
+                  className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
                 >
                   <svg
-                    class="w-7 h-7"
+                    className="w-7 h-7"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -58,10 +55,10 @@ function Footer() {
                 <a
                   href="https://www.instagram.com/ncc_mait"
                   title=""
-                  class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
+                  className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
                 >
                   <svg
-                    class="w-7 h-7"
+                    className="w-7 h-7"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -77,10 +74,10 @@ function Footer() {
                 <a
                   href="https://github.com/alamrumman/Fund-raiser-app"
                   title=""
-                  class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
+                  className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-15 h-15 hover:bg-blue-600 focus:bg-blue-600"
                 >
                   <svg
-                    class="w-7 h-7"
+                    className="w-7 h-7"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -97,11 +94,11 @@ function Footer() {
           </div>
 
           <div>
-            <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase ">
+            <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase ">
               Help
             </p>
 
-            <ul class="mt-6 space-y-4 flex ">
+            <ul className="mt-6 space-y-4 flex ">
               <li>
                 <a
                   onClick={() => {
@@ -109,7 +106,7 @@ function Footer() {
                   }}
                   href="#"
                   title=""
-                  class="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"
+                  className="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"
                 >
                   {" "}
                   Customer Support{" "}
@@ -122,7 +119,7 @@ function Footer() {
                     navigate("/terms-and-conditions");
                   }}
                   title=""
-                  class="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"
+                  className="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"
                 >
                   {" "}
                   Terms & Conditions{" "}
@@ -132,9 +129,9 @@ function Footer() {
           </div>
         </div>
 
-        <hr class="mt-16 mb-10 border-black" />
+        <hr className="mt-16 mb-10 border-black" />
 
-        <p class="text-sm text-center text-gray-600">
+        <p className="text-sm text-center text-gray-600">
           © Copyright 2025, All Rights Reserved
         </p>
       </div>

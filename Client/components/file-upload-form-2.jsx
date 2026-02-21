@@ -15,8 +15,9 @@ import {
   FileUploadList,
   FileUploadTrigger,
 } from "../components/ui/file-upload";
+import { toast } from "react-toastify";
 
-const Example = () => {
+const Example = ({ setRefresh }) => {
   const [files, setFiles] = React.useState([]);
   const [message, setMessage] = React.useState("");
   const [upiref, setUpiref] = React.useState("");
@@ -25,7 +26,9 @@ const Example = () => {
 
   // 🔐 STEP 1: Get signature
   const getSignature = async () => {
-    const res = await fetch("https://fund-raiser-app.onrender.com/api/cloudinary/signature");
+    const res = await fetch(
+      "https://fund-raiser-app.onrender.com/api/cloudinary/signature",
+    );
 
     if (!res.ok) {
       throw new Error("Failed to get signature");
@@ -70,15 +73,15 @@ const Example = () => {
   // 🚀 FINAL SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!name || !upiref || !message || files.length === 0) {
-      alert("All fields are required");
+      toast.info("All fields are required");
+      setLoading(false);
       return;
     }
 
-    try {
-      setLoading(true);
-
+    const ticketPromise = (async () => {
       const imageData = await uploadImage(files[0]);
 
       const res = await fetch(
@@ -94,23 +97,40 @@ const Example = () => {
           }),
         },
       );
-      const data = await res.json();
-      if (!res.ok) {
-        console.error("Backend error:", data);
 
-        throw new Error("Ticket creation failed");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setLoading(false);
+        throw new Error(data?.message || "Ticket creation failed");
       }
 
-      alert("Ticket submitted successfully!");
+      return data;
+    })();
+
+    toast.promise(ticketPromise, {
+      pending: "Submitting ticket...",
+      success: "Ticket created successfully 🎉",
+      error: {
+        render({ data }) {
+          return data?.message || "Something went wrong";
+        },
+      },
+    });
+
+    try {
+      await ticketPromise;
+
+      // 🔥 trigger refresh after success
+      setRefresh((prev) => !prev);
 
       setName("");
       setUpiref("");
       setMessage("");
       setFiles([]);
+      setLoading(false);
     } catch (err) {
       console.error(err);
-      alert(err.message);
-    } finally {
       setLoading(false);
     }
   };

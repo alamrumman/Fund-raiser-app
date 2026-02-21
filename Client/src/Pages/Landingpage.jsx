@@ -4,7 +4,9 @@ import Payform from "../components/Payform";
 import Footer from "../components/Footer";
 import { Badge } from "../../components/ui/badge";
 import { COLORS } from "../constants/colors";
+import { TriangleAlert } from "lucide-react";
 import Sponsorcomponent from "../components/Sponsorcomponent";
+import { toast } from "react-toastify";
 function Landingpage() {
   const [popup, setPopup] = useState(false);
   const [sponsor, setSponsor] = useState(false);
@@ -114,8 +116,8 @@ function Landingpage() {
       </div>
 
       {popup && <Payform popup={popup} setPopup={setPopup} />}
-      <div className="flex">
-        <div className="w-48 bg-amber-50 border h-40 m-3 rounded-xl shadow-xl p-2 mt-2">
+      <div className="flex justify-center gap-2">
+        <div className="w-48 bg-amber-50 border h-40 my-3 rounded-xl shadow-xl p-2 mt-2">
           <div className="flex justify-center">
             <h1 className="flex w-full items-center justify-center font-bold ">
               Hello Sponsors!
@@ -139,6 +141,26 @@ function Landingpage() {
             >
               Become a Sponsor!
             </button>
+          </div>
+        </div>
+        <div className=" w-35 sm:w-40 h-40 my-2  bg-amber-50 border border-amber-200 rounded-xl shadow-md">
+          {/* Icon Section */}
+          <div className=" flex items-start justify-center">
+            <div className="bg-amber-100  rounded-full mt-1">
+              <TriangleAlert className="w-10 h-10 text-amber-600" />
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="">
+            <h3 className="text-sm font-semibold text-amber-800  flex justify-center mt-1">
+              Payment Alert
+            </h3>
+            <p className="text-xs text-amber-700  px-1.5 ">
+              We are currently experiencing issues with{" "}
+              <span className="font-semibold">PhonePe</span>. Please use other
+              UPI apps for payments
+            </p>
           </div>
         </div>
       </div>
