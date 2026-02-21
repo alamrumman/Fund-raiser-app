@@ -9,7 +9,7 @@ const statusStyles = {
   rejected: "bg-red-100 text-red-600",
 };
 
-const TicketList = () => {
+const TicketList = ({ refresh }) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
@@ -22,7 +22,7 @@ const TicketList = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [refresh]);
 
   if (loading) {
     return (

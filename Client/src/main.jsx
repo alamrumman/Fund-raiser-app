@@ -14,10 +14,12 @@ import PaymentFailed from "./components/PaymentFailed.jsx";
 import AdminSuccessTransactions from "./components/AdminSuccessTransactions.jsx";
 import RaiseIssue from "./components/RaiseIssue.jsx";
 import TermsAndConditions from "./Pages/TermsAndConditions.jsx";
-import CustomerSupport from "./Pages/CustomerSupport.jsx"
+import { ToastContainer, Slide } from "react-toastify";
+import CustomerSupport from "./Pages/CustomerSupport.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
+      <ToastContainer autoClose={2500} transition={Slide} />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/payment-processing" element={<PaymentProcessing />} />
