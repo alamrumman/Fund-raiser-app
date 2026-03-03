@@ -1,4 +1,9 @@
-# 🎯 FundRaiser – Smart Contribution Platform
+![CI](https://github.com/alamrumman/Fund-raiser-app/actions/workflows/ci.yml/badge.svg)
+![Node.js](https://img.shields.io/badge/Node.js-18-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-brightgreen)
+![License](https://img.shields.io/badge/license-ISC-blue)
+
+# 🎯 FundRaiser – Smart Contribution Platform  [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit-brightgreen?style=flat&logo=render)](https://fund-raiser-app-1.onrender.com)
 
 A modern full-stack fundraising platform built with the **MERN Stack** that enables seamless digital contributions with secure payment integration, QR payments, redirect handling, and real-time status verification.
 
