@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { answer } = require("../Controllers/Firstreply");
-const { amountRecalculate } = require("../Controllers/Amount");
+const { amountRecalculate } = require("../Controllers/amount");
 const { customAmount } = require("../Controllers/CustomAmount");
 // POST because data comes from body
 router.post("/recalculate-amount", amountRecalculate);
