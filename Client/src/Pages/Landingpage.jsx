@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { Badge } from "../../components/ui/badge";
 import { COLORS } from "../constants/colors";
 import { TriangleAlert } from "lucide-react";
+
 import Sponsorcomponent from "../components/Sponsorcomponent";
 import { toast } from "react-toastify";
 function Landingpage() {
@@ -80,12 +81,12 @@ function Landingpage() {
             ? ""
             : `₹${new Intl.NumberFormat("en-IN").format(animatedAmount)}/-`}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center">
           powered by
           <img
             src="\images\upi.svg"
             alt=""
-            className="h-7 w-12 bg-white ml-1 mr-1"
+            className="h-8 w-12 bg-white ml-1 mr-1"
           />{" "}
           &
           <img

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
 import Spinner from "./Spinner";
+import { X } from "lucide-react";
 function Sponsorcomponent({ sponsor, setSponsor }) {
   if (!sponsor) return null;
 
@@ -88,16 +89,13 @@ function Sponsorcomponent({ sponsor, setSponsor }) {
           <div className="py-5 px-2 font-semibold text-lg flex justify-between">
             <div className="w-12"> </div>
             <div>Sponsorship Form</div>
-            <button>
-              {" "}
-              <img
-                src="\images\close-x-svgrepo-com.svg"
-                alt=""
-                className="w-6 h-6 mr-2"
-                onClick={() => {
-                  setSponsor(false);
-                }}
-              />{" "}
+            <button
+              className="mr-1"
+              onClick={() => {
+                setSponsor(false);
+              }}
+            >
+              <X />
             </button>
           </div>
 

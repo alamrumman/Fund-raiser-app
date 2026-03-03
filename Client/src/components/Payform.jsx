@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { COLORS } from "../constants/colors";
 import Spinner from "./Spinner";
+import { X } from "lucide-react";
 const yearAmountMap = {
   first: 200,
   second: 250,
@@ -105,28 +106,26 @@ function Payform({ popup, setPopup }) {
           <div>Contribution Form</div>
           <button onClick={() => setPopup(false)}>
             {" "}
-            <img
-              src="\images\close-x-svgrepo-com.svg"
-              alt=""
-              className="w-6 h-6 mr-2"
-            />{" "}
+            <X className="mr-1" />
           </button>
         </div>
-        <div className="flex items-center justify-center gap-3">
-          <span className="text-sm font-medium text-gray-600">SD</span>
+        <div className="flex items-center justify-center gap-3 ">
+          <div className="flex gap-3 border-b-2 border-t-2 border-black p-2">
+            <span className="text-sm font-medium text-gray-600">SD</span>
 
-          <div
-            onClick={() => setIsSW(!isSW)}
-            className={`relative w-12 h-6 rounded-full cursor-pointer transition
-          ${isSW ? "bg-blue-400" : "bg-green-300"}`}
-          >
             <div
-              className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition
+              onClick={() => setIsSW(!isSW)}
+              className={`relative w-12 h-6 rounded-full cursor-pointer transition
+          ${isSW ? "bg-blue-400" : "bg-green-300"}`}
+            >
+              <div
+                className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition
             ${isSW ? "translate-x-6" : "translate-x-0.5"}`}
-            />
-          </div>
+              />
+            </div>
 
-          <span className="text-sm font-medium text-gray-600">SW</span>
+            <span className="text-sm font-medium text-gray-600">SW</span>
+          </div>
         </div>
         <div className="p-5">
           <label htmlFor="" className="flex ml-2">
