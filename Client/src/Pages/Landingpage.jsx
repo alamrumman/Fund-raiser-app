@@ -124,7 +124,7 @@ function Landingpage() {
               Hello Sponsors!
             </h1>
             <img
-              src="\images\waving-hand-medium-light-skin-tone-svgrepo-com.svg"
+              src="\images\waving-hand-medium-light-skin-tone-svgrepo-com (2).svg"
               alt=""
               className="w-10"
             />{" "}
