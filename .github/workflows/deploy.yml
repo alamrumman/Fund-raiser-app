@@ -2,24 +2,27 @@ name: Test, Build and Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main] # only runs on main branch, not every branch
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # fresh Ubuntu VM on GitHub's servers
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # clones your repo into the VM
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20 # match your Dockerfile
+          node-version: 20 # matches your Dockerfile node version
 
       - run: npm install
+        working-directory: ./Server # backend lives in Server/ not root
+
       - run: npm test
+        working-directory: ./Server # run tests from same folder
 
   build-and-deploy:
     runs-on: ubuntu-latest
-    needs: test # waits for test job to pass first
+    needs: test # this job won't start until test job passes
     steps:
       - uses: actions/checkout@v4
 
@@ -27,15 +30,15 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.actor }} # your GitHub username
+          password: ${{ secrets.GITHUB_TOKEN }} # auto-provided by GitHub, no setup needed
 
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./Server # Dockerfile is inside Server/ folder
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/fund-raiser-server:latest
+          tags: ghcr.io/${{ github.repository_owner }}/fund-raiser-server:latest # image name on GHCR
 
       - name: Trigger Render deploy
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }} # pings Render to pull latest image
