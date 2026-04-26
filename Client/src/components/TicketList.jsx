@@ -38,7 +38,7 @@ const TicketList = ({ refresh }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-4">
+    <div className="min-h-screen bg-linear-to-b from-slate-50 to-white p-4">
       <div className="max-w-xl mx-auto space-y-3">
         {tickets.map((ticket) => {
           const isOpen = openId === ticket._id;
